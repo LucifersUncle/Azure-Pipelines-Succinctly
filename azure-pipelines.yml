@@ -19,18 +19,3 @@ steps:
   displayName: Build libraries
   inputs:
     command: 'build'
-- task: DotNetCoreCLI@2
-  displayName: Test libraries
-  inputs:
-    command: 'test'
-- task: DotNetCoreCLI@2
-  displayName: Pack libraries
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
