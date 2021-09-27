@@ -4,23 +4,53 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+
+- master
 
 pool:
+
   vmImage: 'ubuntu-latest'
 
-
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
+
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-  inputs:
-    versionSpec: '4.7.1'
-    checkLatest: true
+
 - task: DotNetCoreCLI@2
+
   displayName: Build libraries
+
   inputs:
+
     command: 'build'
+
+- task: DotNetCoreCLI@2
+
+  displayName: Test libraries
+
+  inputs:
+
+    command: 'test'
+
+- task: DotNetCoreCLI@2
+
+  displayName: Pack libraries
+
+  inputs:
+
+    command: 'pack'
+
+    packagesToPack: '**/*.csproj'
+
+    versioningScheme: 'off'
+
+- task: PublishBuildArtifacts@1
+
+  inputs:
+
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+
+    ArtifactName: 'drop'
+
+    publishLocation: 'Container'
